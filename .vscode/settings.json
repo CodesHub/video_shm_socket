@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "sem.h": "c",
+        "jffs2.h": "c",
+        "frame_protocol.h": "c"
+    }
+}

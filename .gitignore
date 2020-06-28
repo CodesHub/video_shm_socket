@@ -1,0 +1,5 @@
+
+#ignore floder
+devel/
+build/
+old_version/
