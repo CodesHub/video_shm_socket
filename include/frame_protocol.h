@@ -46,6 +46,7 @@ extern "C"
         //     sync_state = FS_FIND_AA1;
         //     frame_idx = 0;
         // }
+        int i=0;
         switch (sync_state)
         {
         case FS_FIND_AA1:
@@ -98,11 +99,10 @@ extern "C"
             {
                 g_can_frame[frame_idx] = cur_byte;
                 pmsg.id = 0;
-                for (int i = 0; i < 4; i++)
                     pmsg.id += (g_can_frame[2 + i] << (8 * i));
                 pmsg.data = (char *)(&g_can_frame[6]);
                 pmsg.data_len = 0;
-                for (int i = 0; i < 4; i++)
+                for (i = 0; i < 4; i++)
                     pmsg.data_len += (g_can_frame[frame_idx - 9 + i] << (8 * i));
                 /* 存入缓冲区待使用 */
                 //memcpy(&g_uart_dat.msg_rcv, pmsg, sizeof(CAN_msg));

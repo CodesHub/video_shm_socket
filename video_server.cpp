@@ -8,9 +8,7 @@
 #include <sys/mman.h>
 #include <poll.h>
 #include <stdlib.h>
-#include "yuv_to_jpeg.h"
 #include "unistd.h"
-#include <opencv2/opencv.hpp> //opencv的头文件
 #include "shm.h"
 #include <pthread.h>
 #include <signal.h>
@@ -22,8 +20,6 @@
 #include <frame_protocol.h>
 #include <sem.h>
 #include <sys/sem.h>
-
-using namespace cv; //使用命名空间cv,使用过C++的都明白，我们写C++程序必须使用using namespace std。
 
 #define HOST "127.0.0.1"		 // 根据你服务器的 IP 地址修改
 #define PORT 6667				 // 根据你服务器进程绑定的端口号修改

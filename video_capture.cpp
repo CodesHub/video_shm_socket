@@ -8,13 +8,9 @@
 #include <sys/mman.h>
 #include <poll.h>
 #include <stdlib.h>
-#include "yuv_to_jpeg.h"
 #include "unistd.h"
-#include <opencv2/opencv.hpp> //opencv的头文件
 #include "shm.h"
 #include <signal.h>
-
-using namespace cv; 
 
 #define BUFFER_SIZE (1024 * 1024) //shm大小
 
@@ -235,10 +231,11 @@ int main(int argc, char **argv)
 		
 		/*(3)处理图像数据*/
 		/*YUV数据转JPEG格式*/
-		jpg_size = yuv_to_jpeg(image_width, image_height, image_height * image_width * 3, image_buffer[video_buffer.index], jpg_p, 80);
+		//jpg_size = yuv_to_jpeg(image_width, image_height, image_height * image_width * 3, image_buffer[video_buffer.index], jpg_p, 80);
 		
 		/*(4)写入jpg 图片到 共享内存*/
-		shmWrite((char *)shm, (char *)jpg_p, jpg_size);
+		shmWrite((char *)shm, (char *)image_buffer[video_buffer.index], image_height * image_width * 3);
+		//shmWrite((char *)shm, (char *)jpg_p, jpg_size);
 
 		/*(5)将缓冲区再放入队列*/
 		ioctl(uvc_video_fd, VIDIOC_QBUF, &video_buffer); //video_buffer.index=0,1,2,3  push to queue buf

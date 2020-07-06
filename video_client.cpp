@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include "yuv_to_jpeg.h"
 #include "unistd.h"
-#include <opencv2/opencv.hpp> //opencv的头文件
 #include "shm.h"
 #include <pthread.h>
 #include <signal.h>
@@ -22,7 +21,8 @@
 #include <sem.h>
 #include <sys/sem.h>
 
-using namespace cv; //使用命名空间cv,使用过C++的都明白，我们写C++程序必须使用using namespace std。
+//#include <opencv2/opencv.hpp> //opencv的头文件
+//using namespace cv; //使用命名空间cv,使用过C++的都明白，我们写C++程序必须使用using namespace std。
 
 #define HOST "127.0.0.1"		 // 根据你服务器的 IP 地址修改
 #define PORT 6667				 // 根据你服务器进程绑定的端口号修改
@@ -84,7 +84,13 @@ int main(int argc, char **argv)
 	CAN_msg *pmsgTemp, *pmsg;
 	clock_t start, end;
 	uint32_t last_id=0;
-	
+	int jpg_size;
+	int image_height=480,image_width=640;
+	unsigned char *jpg_p = (unsigned char *)malloc(image_height * image_width * 3);
+	char jpg_file_name[100]; /*存放JPG图片名称*/
+	FILE *jpg_file;
+	int jpg_cnt = 0;
+
 	start = clock(); /*记录起始时间*/
 	//捕获ctrl+c
 	signal(SIGINT, stop);
@@ -131,16 +137,28 @@ int main(int argc, char **argv)
 					seconds = seconds > 1 ? seconds : 1;
 					printf("need wait mseconds:%f\n", seconds);
 
+					/*转换图片*/
+					
+					jpg_size = yuv_to_jpeg(image_width, image_height, image_height * image_width * 3, (unsigned char*)pmsg->data, jpg_p, 80);
+
 					/*显示图片*/
-					CvMat mCvmat = cvMat(image_width, image_height, CV_8UC1, pmsg->data);
-					IplImage *IpImg = cvDecodeImage(&mCvmat, 1);
-					//opencv3 .0 IplImage到Mat类型的转换的方法
-					Mat image = cvarrToMat(IpImg);
-					if (!image.data)
-						return false;
-					imshow("image", image);
-					cvReleaseImage(&IpImg);
-					waitKey(seconds);
+					// CvMat mCvmat = cvMat(image_width, image_height, CV_8UC1, jpg_p);
+					// IplImage *IpImg = cvDecodeImage(&mCvmat, 1);
+					// //opencv3 .0 IplImage到Mat类型的转换的方法
+					// Mat image = cvarrToMat(IpImg);
+					// if (!image.data)
+					// 	return false;
+					// imshow("image", image);
+					// cvReleaseImage(&IpImg);
+					// waitKey(seconds);
+
+					/*保存图片到文件*/
+					jpg_file=fopen(jpg_file_name,"wb");
+					fwrite(jpg_p,1,jpg_size,jpg_file);
+					fclose(jpg_file);
+					sprintf(jpg_file_name, "%d.jpg", jpg_cnt++);
+					printf("图片名称:%s,字节大小:%d\n",jpg_file_name,jpg_size);
+					sleep(1);
 				}
 				actRead = actRead - pmsg->total_len;
 				pmsg = NULL;
@@ -148,6 +166,10 @@ int main(int argc, char **argv)
 		}
 	}
 	close(sockfd);
+	if(jpg_p!=NULL){
+		free(jpg_p);
+		jpg_p = NULL;
+	}
 	return 0;
 }
 

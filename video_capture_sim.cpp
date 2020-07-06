@@ -1,12 +1,10 @@
 #include "unistd.h"
 #include <stdio.h>
 #include <sys/types.h>
-#include <opencv2/opencv.hpp> //opencv的头文件
 #include "shm.h"
 #include <pthread.h>
 #include <signal.h>
 
-using namespace cv;
 #define BUFFER_SIZ (1024 * 1024) //数据区域
 void *shm = NULL;
 unsigned char buffer[BUFFER_SIZ];
@@ -49,6 +47,5 @@ int main(int argc, char **argv)
             usleep(1000000 / 100);
         }
     }
-
     return 0;
 }
