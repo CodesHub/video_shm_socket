@@ -139,7 +139,7 @@ int main(int argc, char **argv)
 
 					/*转换图片*/
 					
-					jpg_size = yuv_to_jpeg(image_width, image_height, image_height * image_width * 3, (unsigned char*)pmsg->data, jpg_p, 80);
+					jpg_size = yuv_to_jpeg(image_width, image_height, pmsg->data_len, (unsigned char*)pmsg->data, jpg_p, 80);
 
 					/*显示图片*/
 					// CvMat mCvmat = cvMat(image_width, image_height, CV_8UC1, jpg_p);
@@ -153,10 +153,10 @@ int main(int argc, char **argv)
 					// waitKey(seconds);
 
 					/*保存图片到文件*/
+					sprintf(jpg_file_name, "%d.jpg", jpg_cnt++);
 					jpg_file=fopen(jpg_file_name,"wb");
 					fwrite(jpg_p,1,jpg_size,jpg_file);
 					fclose(jpg_file);
-					sprintf(jpg_file_name, "%d.jpg", jpg_cnt++);
 					printf("图片名称:%s,字节大小:%d\n",jpg_file_name,jpg_size);
 					sleep(1);
 				}

@@ -6,9 +6,9 @@ project(video_capture)
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
 set(CMAKE_C_FLAGS_Release "${CMAKE_C_FLAGS_Release} -O3")
-#SET(CMAKE_SYSTEM_NAME Linux)
-#SET(CMAKE_C_COMPILER /home/jinhong/imx6_gcc_g++/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc)
-#SET(CMAKE_CXX_COMPILER /home/jinhong/imx6_gcc_g++/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-c++)
+SET(CMAKE_SYSTEM_NAME Linux)
+SET(CMAKE_C_COMPILER /home/jinhong/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc)
+SET(CMAKE_CXX_COMPILER /home/jinhong//gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-c++)
 
 # Find OpenCV, you may need to set OpenCV_DIR variable
 # to the absolute path to the directory containing OpenCVConfig.cmake file
@@ -43,13 +43,16 @@ add_executable(video_capture video_capture.cpp)
 # Link your application with OpenCV libraries 被依赖的库的库放在依赖它的库的后面
 target_link_libraries(video_capture shm_lib protocol_lib  ${OpenCV_LIBS} ) 
 
+add_executable(video_capture_sim video_capture_sim.cpp)
+target_link_libraries(video_capture_sim shm_lib  ${OpenCV_LIBS} ) 
+
 add_executable(video_server video_server.cpp)
 target_link_libraries(video_server shm_lib protocol_lib pthread ${OpenCV_LIBS} ) 
 
-add_library(jpeg_lib STATIC ./include/yuv_to_jpeg.cpp) 
-add_executable(video_client video_client.cpp)
-target_link_libraries(video_client shm_lib protocol_lib jpeg_lib jpeg pthread ${OpenCV_LIBS} ) 
+#add_library(jpeg_lib STATIC ./include/yuv_to_jpeg.cpp) 
+#add_executable(video_client video_client.cpp)
+#target_link_libraries(video_client shm_lib protocol_lib jpeg_lib jpeg pthread ${OpenCV_LIBS} ) 
 
-add_executable(video_capture_sim video_capture_sim.cpp)
-target_link_libraries(video_capture_sim shm_lib common_lib  ${OpenCV_LIBS} ) 
 
+
+ 

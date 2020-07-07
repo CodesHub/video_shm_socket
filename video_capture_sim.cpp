@@ -29,9 +29,9 @@ int main(int argc, char **argv)
 
     while (1)
     {
-        for (i = 0; i < 4; i++)
+        for (i = 0; i < 12; i++)
         {
-            sprintf(fileName, "/home/jinhong/video_shm_socket/pic_%d.png", i);
+            sprintf(fileName, "/home/jinhong/video_shm_socket/yuv_640_480/%d.yuv", i);
             FILE *fd = fopen(fileName, "r+b");
             if (NULL == fd) //判断指向我文件位置不为空
             {

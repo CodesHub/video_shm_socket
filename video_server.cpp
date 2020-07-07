@@ -24,7 +24,7 @@
 #define HOST "127.0.0.1"		 // 根据你服务器的 IP 地址修改
 #define PORT 6667				 // 根据你服务器进程绑定的端口号修改
 #define BUFFER_SIZ (1024 * 1024) // 4k 的数据区域
-#define FPS 60					 //帧率
+#define FPS 30					 //帧率
 
 int image_width = 1280;
 int image_height = 720;
@@ -137,7 +137,7 @@ void *socket_write(void *arg)
 				}
 				else
 				{
-					printf("socket server:ID:%d, 数据帧长度%d B,  数据段长度%d B, 实际发送 %d B\n", imageid, frameLen, revLen, actwrite);
+					//printf("socket server:ID:%d, 数据帧长度%d B,  数据段长度%d B, 实际发送 %d B\n", imageid, frameLen, revLen, actwrite);
 				}
 			}
 
@@ -209,8 +209,8 @@ int main(int argc, char **argv)
 	int len, pid;
 	char client_ip[128];
 	char arg_buf[1] = {0};
-	pthread_t thread;
 	socklen_t socketlen;
+	pthread_t thread;
 	void *thread_return;
 	int res = 0;
 

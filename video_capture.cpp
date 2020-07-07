@@ -227,13 +227,13 @@ int main(int argc, char **argv)
 		video_buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE; /*视频捕获设备*/
 		video_buffer.memory = V4L2_MEMORY_MMAP;
 		ioctl(uvc_video_fd, VIDIOC_DQBUF, &video_buffer);									   //Drag from queue buf 
-		printf("image_buffer[%d]=%X\r", video_buffer.index, image_buffer[video_buffer.index]); //image_buffer-->uvc_video_fd+buff_info.m.offset,读取相应缓冲区内存
+		//printf("image_buffer[%d]=%X\r", video_buffer.index, image_buffer[video_buffer.index]); //image_buffer-->uvc_video_fd+buff_info.m.offset,读取相应缓冲区内存
 		
 		/*(3)处理图像数据*/
 		/*YUV数据转JPEG格式*/
 		//jpg_size = yuv_to_jpeg(image_width, image_height, image_height * image_width * 3, image_buffer[video_buffer.index], jpg_p, 80);
 		
-		/*(4)写入jpg 图片到 共享内存*/
+		/*(4)写入yuv 图片到 共享内存*/
 		shmWrite((char *)shm, (char *)image_buffer[video_buffer.index], image_height * image_width * 3);
 		//shmWrite((char *)shm, (char *)jpg_p, jpg_size);
 

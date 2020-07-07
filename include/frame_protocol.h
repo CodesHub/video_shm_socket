@@ -99,6 +99,7 @@ extern "C"
             {
                 g_can_frame[frame_idx] = cur_byte;
                 pmsg.id = 0;
+                for (i = 0; i < 4; i++)
                     pmsg.id += (g_can_frame[2 + i] << (8 * i));
                 pmsg.data = (char *)(&g_can_frame[6]);
                 pmsg.data_len = 0;
