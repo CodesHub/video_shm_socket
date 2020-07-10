@@ -90,11 +90,11 @@ int VideoDeviceInit(char *DEVICE_NAME)
 	printf("摄像头实际输出的图像尺寸:x=%d,y=%d\n", format.fmt.pix.width, format.fmt.pix.height);
 	if (format.fmt.pix.pixelformat == V4L2_PIX_FMT_YUYV)
 	{
-		printf("当前摄像头支持YUV格式图像输出!\n");
+		printf("当前摄像头支持YUYV格式图像输出!\n");
 	}
 	else
 	{
-		printf("当前摄像头不支持YUV格式图像输出!\n");
+		printf("当前摄像头不支持YUYV格式图像输出!\n");
 		return -3;
 	}
 
@@ -211,7 +211,7 @@ int main(int argc, char **argv)
 	fds.events = POLLIN;
 
 	/*3. 申请存放JPG的数据空间*/
-	unsigned char *jpg_p = (unsigned char *)malloc(image_height * image_width * 3);
+	//unsigned char *jpg_p = (unsigned char *)malloc(image_height * image_width * 3);
 
 	struct v4l2_buffer video_buffer;
 
@@ -234,7 +234,7 @@ int main(int argc, char **argv)
 		//jpg_size = yuv_to_jpeg(image_width, image_height, image_height * image_width * 3, image_buffer[video_buffer.index], jpg_p, 80);
 		
 		/*(4)写入yuv 图片到 共享内存*/
-		shmWrite((char *)shm, (char *)image_buffer[video_buffer.index], image_height * image_width * 3);
+		shmWrite((char *)shm, (char *)image_buffer[video_buffer.index], video_buffer.length);
 		//shmWrite((char *)shm, (char *)jpg_p, jpg_size);
 
 		/*(5)将缓冲区再放入队列*/
@@ -251,5 +251,6 @@ int main(int argc, char **argv)
 		//  if(video_buffer.index ==3)
 		//  	break;
 	}
+	stop(0);
 	return 0;
 }
